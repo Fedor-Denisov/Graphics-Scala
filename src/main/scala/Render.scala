@@ -100,7 +100,16 @@ object Render {
     drawLine(img, new Point(right, down), new Point(right, up), color)
     drawLine(img, new Point(left, up), new Point(left, down), color)
     drawLine(img, new Point(left, down), new Point(right, down), color)
-
+    for (i <- left to right) {
+      for (j <- up to down) {
+        // A - point1, B - point2, C - point3, P.x = i, P.y = j
+        val w1: Double = (point1.getX * (point3.getY - point1.getY).toFloat + (j - point1.getY).toFloat * (point3.getX - point1.getX).toFloat - i * (point3.getY - point1.getY).toFloat) / ((point2.getY - point1.getY).toFloat * (point3.getX - point1.getX).toFloat - (point2.getX - point1.getX).toFloat * (point3.getY - point1.getY).toFloat)
+        val w2: Double = (j - point1.getY - w1 * (point2.getY - point1.getY).toFloat) / (point3.getY - point1.getY).toFloat
+        if (w1 >= 0 && w2 >= 0 && w1 + w2 <= 1) {
+          img.setRGB(i, j, new Color(color, 0, color).getRGB)
+        }
+      }
+    }
   }
 
 }
