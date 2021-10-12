@@ -3,6 +3,31 @@ import java.awt.image.BufferedImage
 
 object Render {
 
+  class PairOfPoxtent(p1: Poxtent, p2: Poxtent) {
+    def getP1: Poxtent = {
+      p1
+    }
+
+    def getP2: Poxtent = {
+      p2
+    }
+  }
+
+  // Poxtent = point + extent
+  class Poxtent(x: Int, y: Int, z: Int) {
+    def getX: Int = {
+      x
+    }
+
+    def getY: Int = {
+      y
+    }
+
+    def getZ: Int = {
+      z
+    }
+  }
+
   class Point(x: Int, y: Int) {
     def getX: Int = {
       x
@@ -15,9 +40,7 @@ object Render {
 
   def render(img: BufferedImage): Unit = { //img.setRGB(500, 300, new Color(255, 0, 200).getRGB())
     val color = 240
-    //    drawLine(img, new Point(300,300), new Point(280,500), color)
-    fillTriangle(img, new Point(600, 100), new Point(200, 400), new Point(700, 700), color)
-    //    fillTriangle(img, new Point(160, 350), new Point(500, 80), new Point(350, 600), color)
+    fillTriangle(img, new Poxtent(100, 100, 0), new Poxtent(200, 100, 0), new Poxtent(150, 300, 0), color)
   }
 
   def drawLine(img: BufferedImage, point1: Point, point2: Point, color: Int): Unit = {
@@ -64,47 +87,47 @@ object Render {
     drawLine(img, new Point(point3.getX, point3.getY), new Point(point2.getX, point2.getY), color)
   }
 
-  def fillTriangle(img: BufferedImage, point1: Point, point2: Point, point3: Point, color: Int): Unit = {
-    drawTriangle(img, point1, point2, point3, color)
+  def fillTriangle(img: BufferedImage, poxtent1: Poxtent, poxtent2: Poxtent, poxtent3: Poxtent, color: Int): Unit = {
+    //    drawTriangle(img, point1, point2, point3, color)
     var left, right, up, down = 0
-    if (point1.getX <= point2.getX && point1.getX <= point3.getX) {
-      left = point1.getX
-    } else if (point2.getX <= point1.getX && point2.getX <= point3.getX) {
-      left = point2.getX
+    if (poxtent1.getX <= poxtent2.getX && poxtent1.getX <= poxtent3.getX) {
+      left = poxtent1.getX
+    } else if (poxtent2.getX <= poxtent1.getX && poxtent2.getX <= poxtent3.getX) {
+      left = poxtent2.getX
     } else {
-      left = point3.getX
+      left = poxtent3.getX
     }
-    if (point1.getX >= point2.getX && point1.getX >= point3.getX) {
-      right = point1.getX
-    } else if (point2.getX >= point1.getX && point2.getX >= point3.getX) {
-      right = point2.getX
+    if (poxtent1.getX >= poxtent2.getX && poxtent1.getX >= poxtent3.getX) {
+      right = poxtent1.getX
+    } else if (poxtent2.getX >= poxtent1.getX && poxtent2.getX >= poxtent3.getX) {
+      right = poxtent2.getX
     } else {
-      right = point3.getX
+      right = poxtent3.getX
     }
-    if (point1.getY <= point2.getY && point1.getY <= point3.getY) {
-      up = point1.getY
-    } else if (point2.getY <= point1.getY && point2.getY <= point3.getY) {
-      up = point2.getY
+    if (poxtent1.getY <= poxtent2.getY && poxtent1.getY <= poxtent3.getY) {
+      up = poxtent1.getY
+    } else if (poxtent2.getY <= poxtent1.getY && poxtent2.getY <= poxtent3.getY) {
+      up = poxtent2.getY
     } else {
-      up = point3.getY
+      up = poxtent3.getY
     }
-    if (point1.getY >= point2.getY && point1.getY >= point3.getY) {
-      down = point1.getY
-    } else if (point2.getY >= point1.getY && point2.getY >= point3.getY) {
-      down = point2.getY
+    if (poxtent1.getY >= poxtent2.getY && poxtent1.getY >= poxtent3.getY) {
+      down = poxtent1.getY
+    } else if (poxtent2.getY >= poxtent1.getY && poxtent2.getY >= poxtent3.getY) {
+      down = poxtent2.getY
     } else {
-      down = point3.getY
+      down = poxtent3.getY
     }
     //    print("left: " + left + " -|- " + "right: " + +right + " -|- " + "up: " + +up + " -|- " + "down: " + down + "\n")
-    drawLine(img, new Point(left, up), new Point(right, up), color)
-    drawLine(img, new Point(right, down), new Point(right, up), color)
-    drawLine(img, new Point(left, up), new Point(left, down), color)
-    drawLine(img, new Point(left, down), new Point(right, down), color)
+    //    drawLine(img, new Point(left, up), new Point(right, up), color) // point -> poxtent
+    //    drawLine(img, new Point(right, down), new Point(right, up), color)
+    //    drawLine(img, new Point(left, up), new Point(left, down), color)
+    //    drawLine(img, new Point(left, down), new Point(right, down), color)
     for (i <- left to right) {
       for (j <- up to down) {
-        // A - point1, B - point2, C - point3, P.x = i, P.y = j
-        val w1: Double = (point1.getX * (point3.getY - point1.getY).toFloat + (j - point1.getY).toFloat * (point3.getX - point1.getX).toFloat - i * (point3.getY - point1.getY).toFloat) / ((point2.getY - point1.getY).toFloat * (point3.getX - point1.getX).toFloat - (point2.getX - point1.getX).toFloat * (point3.getY - point1.getY).toFloat)
-        val w2: Double = (j - point1.getY - w1 * (point2.getY - point1.getY).toFloat) / (point3.getY - point1.getY).toFloat
+        // A - poxtent1, B - poxtent2, C - poxtent3, P.x = i, P.y = j
+        val w1: Double = (poxtent1.getX * (poxtent3.getY - poxtent1.getY).toFloat + (j - poxtent1.getY).toFloat * (poxtent3.getX - poxtent1.getX).toFloat - i * (poxtent3.getY - poxtent1.getY).toFloat) / ((poxtent2.getY - poxtent1.getY).toFloat * (poxtent3.getX - poxtent1.getX).toFloat - (poxtent2.getX - poxtent1.getX).toFloat * (poxtent3.getY - poxtent1.getY).toFloat)
+        val w2: Double = (j - poxtent1.getY - w1 * (poxtent2.getY - poxtent1.getY).toFloat) / (poxtent3.getY - poxtent1.getY).toFloat
         if (w1 >= 0 && w2 >= 0 && w1 + w2 <= 1) {
           img.setRGB(i, j, new Color(color, 0, color).getRGB)
         }

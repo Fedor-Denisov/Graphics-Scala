@@ -8,7 +8,8 @@ object MyMain {
 
   def draw(g: Graphics2D): Unit = {
     val img = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB)
-    Render.render(img)
+//        Render.render(img)
+    ObjReader.readAndDrawFile("src/main/resources/uaz.obj", img, 240)
     g.drawImage(img, 0, 0, null)
   }
 
