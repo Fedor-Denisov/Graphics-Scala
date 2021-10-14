@@ -17,15 +17,15 @@ object ObjReader extends App {
       } else if ("#".equals(splitLine(0))) { // Commentary
         //      print(i + 1 + " comment\n")
       } else if ("v".equals(splitLine(0))) { // v 1203.0430534 3234.230302 2313.43432 or smth like this
-        val x = splitLine(1).toFloat
-        val y = splitLine(2).toFloat
-        val z = splitLine(3).toFloat
+        val x = splitLine(1).toFloat.abs
+        val y = splitLine(2).toFloat.abs
+        val z = splitLine(3).toFloat.abs
         val NewPointList = pointList :+ new Poxtent(x.toInt, y.toInt, z.toInt)
         pointList = NewPointList
         //      print(i + 1 + " point\n")
       } else if ("vt".equals(splitLine(0))) { // vt 0.343343 0.53442432 or smth like this
-        val a = splitLine(1).toFloat
-        val b = splitLine(2).toFloat
+        val a = splitLine(1).toFloat.abs
+        val b = splitLine(2).toFloat.abs
         textureList :+ new Poxtent(a.toInt, b.toInt, 0)
         //      print(i + 1 + " vertex\n")
       } else if ("vn".equals(splitLine(0))) { // Normal

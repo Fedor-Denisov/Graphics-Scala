@@ -2,14 +2,14 @@ import java.awt.Graphics2D
 import java.awt.image.BufferedImage
 import javax.swing.{JFrame, WindowConstants}
 
-object MyMain {
-  private val w = 1366
-  private val h = 768
+object Main {
+  private val w = 1720
+  private val h = 900
 
   def draw(g: Graphics2D): Unit = {
     val img = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB)
 //        Render.render(img)
-    ObjReader.readAndDrawFile("src/main/resources/uaz.obj", img, 240)
+    ObjReader.readAndDrawFile("src/main/resources/garg.obj", img, 240)
     g.drawImage(img, 0, 0, null)
   }
 
